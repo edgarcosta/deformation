@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2010, 2011, 2012 Sebastian Pancratz
+    Copyright (C) 2016 Edgar Costa
  */
 
 #ifndef DEFORMATION_H
@@ -98,10 +99,23 @@ void deformation_precisions(prec_t *prec,
 void deformation_revcharpoly(fmpz_poly_t rop, const fmpz_poly_mat_t op, long v, long n, long d, 
                              long N0, long r, long s, const qadic_ctx_t Qq);
 
+void frob_out(fmpz_poly_t out, const mpoly_t P, const ctx_t ctxFracQt, 
+          const qadic_t t1, const qadic_ctx_t Qq, 
+          prec_t *prec, const prec_t *prec_in,
+          int verbose,
+          int pretty);
+
 void frob(const mpoly_t P, const ctx_t ctxFracQt, 
           const qadic_t t1, const qadic_ctx_t Qq, 
           prec_t *prec, const prec_t *prec_in,
-          int verbose);
+          int verbose)
+{
+    fmpz_poly_t cp;
+    fmpz_poly_init(cp);
+
+    frob_out(cp, P,ctxFracQt, t1, Qq, prec,prec_in, verbose, 1);
+    fmpz_poly_clear(cp);
+}
 
 #endif
 

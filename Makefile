@@ -2,13 +2,13 @@ DEFORMATION_MPIR_LIB_DIR=/usr/local/lib
 DEFORMATION_MPIR_INCLUDE_DIR=/usr/local/include
 DEFORMATION_MPFR_LIB_DIR=/usr/local/lib
 DEFORMATION_MPFR_INCLUDE_DIR=/usr/local/include
-DEFORMATION_FLINT_LIB_DIR=/home/suser/FLINT/flint2
-DEFORMATION_FLINT_INCLUDE_DIR=/home/suser/FLINT/flint2
+DEFORMATION_FLINT_LIB_DIR=/usr/local/lib
+DEFORMATION_FLINT_INCLUDE_DIR=/usr/local/include/flint
 
 DEFORMATION_LIB=libdeformation.so
 CC=gcc
 CFLAGS=-O2 -g -ansi -pedantic -Wall -funroll-loops -Wno-unused
-PREFIX=/usr/local
+PREFIX=$(HOME)/projects/pancratz-tuitman 
 
 LIBS=-L$(CURDIR) -L$(DEFORMATION_MPIR_LIB_DIR) -L$(DEFORMATION_MPFR_LIB_DIR) -L$(DEFORMATION_FLINT_LIB_DIR) -ldeformation -lflint -lmpir -lmpfr -lm
 LIBS2=-L$(DEFORMATION_MPIR_LIB_DIR) -L$(DEFORMATION_MPFR_LIB_DIR) -L$(DEFORMATION_FLINT_LIB_DIR) -lflint -lmpir -lmpfr -lm
@@ -60,6 +60,9 @@ recursive:
 
 examples: all $(LOBJS) library
 	$(foreach prog, $(EXMPS), $(CC) $(CFLAGS) $(INCS) $(prog).c -o $(prog) $(LIBS);)
+
+examples/deformation_file_input: examples/deformation_file_input.c all 
+	$(CC) $(CFLAGS) $(INCS) $< -o $@ $(LIBS)
 
 check: $(DEFORMATION_LIB)
 ifndef MOD

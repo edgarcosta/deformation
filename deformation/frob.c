@@ -1,3 +1,7 @@
+/*
+    Copyright (C) 2010, 2011, 2012 Sebastian Pancratz
+    Copyright (C) 2016 Edgar Costa
+ */
 #include <stdlib.h>
 #include <limits.h>
 #include <time.h>
@@ -354,10 +358,11 @@ void _qadic_mat_mul(fmpz_poly_mat_t C,
     modulo $p^{N_1}$.
  */
 
-void frob(const mpoly_t P, const ctx_t ctxFracQt, 
+void frob_out(fmpz_poly_t cp, const mpoly_t P, const ctx_t ctxFracQt, 
           const qadic_t t1, const qadic_ctx_t Qq, 
           prec_t *prec, const prec_t *prec_in, 
-          int verbose)
+          int verbose,
+          int pretty)
 {
     const padic_ctx_struct *Qp = &Qq->pctx;
     const fmpz *p = Qp->p;
@@ -387,7 +392,6 @@ void frob(const mpoly_t P, const ctx_t ctxFracQt,
     fmpz_poly_mat_t F1;
     long vF1;
 
-    fmpz_poly_t cp;
 
     clock_t c0, c1;
     double c;
@@ -495,8 +499,6 @@ void frob(const mpoly_t P, const ctx_t ctxFracQt,
 
     fmpz_poly_mat_init(F1, b, b);
     vF1 = 0;
-
-    fmpz_poly_init(cp);
 
     /* Step 2 {F0} ***********************************************************/
 
@@ -927,7 +929,10 @@ void frob(const mpoly_t P, const ctx_t ctxFracQt,
     if (verbose)
     {
         printf("Reverse characteristic polynomial:\n");
-        printf("  p(T) = "), fmpz_poly_print_pretty(cp, "T"), printf("\n");
+        if(pretty)
+            printf("  p(T) = "), fmpz_poly_print_pretty(cp, "T"), printf("\n");
+        else
+            fmpz_poly_print(cp), printf("\n");
         printf("  Time = %f\n", c);
         printf("\n");
         fflush(stdout);
@@ -947,6 +952,5 @@ void frob(const mpoly_t P, const ctx_t ctxFracQt,
 
     fmpz_poly_mat_clear(F);
     fmpz_poly_mat_clear(F1);
-    fmpz_poly_clear(cp);
 }
 
