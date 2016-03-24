@@ -108,14 +108,7 @@ void frob_out(fmpz_poly_t out, const mpoly_t P, const ctx_t ctxFracQt,
 void frob(const mpoly_t P, const ctx_t ctxFracQt, 
           const qadic_t t1, const qadic_ctx_t Qq, 
           prec_t *prec, const prec_t *prec_in,
-          int verbose)
-{
-    fmpz_poly_t cp;
-    fmpz_poly_init(cp);
-
-    frob_out(cp, P,ctxFracQt, t1, Qq, prec,prec_in, verbose, 1);
-    fmpz_poly_clear(cp);
-}
+          int verbose);
 
 #endif
 
